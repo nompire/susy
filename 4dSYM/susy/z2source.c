@@ -28,29 +28,28 @@ int Z2source(Twist_Fermion *src) {
   for (i = 0; i < Norder; i++)
     psim[i] = malloc(sites_on_node * sizeof(Twist_Fermion));
 
-  // Begin with pure gaussian random numbers
   FORALLSITES(i, s) {
     clear_TF(&(src[i]));
     for (j = 0; j < DIMF; j++) {                // Site fermions
 #ifdef SITERAND
-      rand = gaussian_rand_no(&(s->site_prn));
+      rand = Z2_rand_no(&(s->site_prn));
 #else
-      rand = gaussian_rand_no(&node_prn);
+      rand = Z2_rand_no(&node_prn);
 #endif
       scalar_mult_sum_matrix(&(Lambda[j]), rand, &(src[i].Fsite));
       FORALLDIR(mu) {                           // Link fermions
 #ifdef SITERAND
-        rand = gaussian_rand_no(&(s->site_prn));
+        rand = Z2_rand_no(&(s->site_prn));
 #else
-        rand = gaussian_rand_no(&node_prn);
+        rand = Z2_rand_no(&node_prn);
 #endif
         scalar_mult_sum_matrix(&(Lambda[j]), rand, &(src[i].Flink[mu]));
       }
       for (mu = 0; mu < NPLAQ; mu++) {         // Plaquette fermions
 #ifdef SITERAND
-        rand = gaussian_rand_no(&(s->site_prn));
+        rand = Z2_rand_no(&(s->site_prn));
 #else
-        rand = gaussian_rand_no(&node_prn);
+        rand = Z2_rand_no(&node_prn);
 #endif
         scalar_mult_sum_matrix(&(Lambda[j]), rand, &(src[i].Fplaq[mu]));
       }
